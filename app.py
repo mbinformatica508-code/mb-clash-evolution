@@ -50,82 +50,96 @@ def home():
     
     return """
     <!DOCTYPE html>
-    <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>MB CLASH - LOGIN</title>
-        <style>
-            body { background: #05050a; color: white; font-family: sans-serif; text-align: center; margin: 0; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
-            .bg-herois { position: fixed; bottom: 0; width: 100%; display: flex; justify-content: space-around; z-index: -1; opacity: 0.5; }
-            .heroi { width: 30%; max-width: 200px; animation: breathe 4s infinite alternate; }
-            @keyframes breathe { from { transform: translateY(0); } to { transform: translateY(-20px); } }
-            .login-box { background: rgba(0,0,0,0.85); padding: 30px; border: 2px solid #ffd700; border-radius: 20px; width: 90%; max-width: 380px; box-shadow: 0 0 20px rgba(255,215,0,0.2); }
-            input { width: 100%; padding: 15px; margin: 10px 0; border-radius: 8px; border: 1px solid #333; background: #000; color: white; box-sizing: border-box; }
-            button { width: 100%; padding: 15px; background: #ffd700; border: none; font-weight: bold; cursor: pointer; border-radius: 8px; font-size: 16px; margin-top: 10px; }
-            .btn-suporte { display: block; margin-top: 20px; color: #3498db; text-decoration: none; font-size: 12px; font-weight: bold; }
-            #msg { color: #ff4757; font-size: 13px; margin-top: 15px; min-height: 20px; }
-        </style>
-    </head>
-    <body>
-        <div class="bg-herois">
-            <img src="https://img.freepik.com/fotos-premium/personagem-de-fantasia-de-mago-misterioso-com-cajado-magico-ia-generativa_201606-6130.jpg" class="heroi">
-            <img src="https://img.freepik.com/fotos-premium/um-cavaleiro-em-armadura-dourada-e-preta-com-um-leao-no-peito_902639-25123.jpg" class="heroi">
-            <img src="https://img.freepik.com/fotos-premium/guerreiro-de-armadura-pesada-em-estilo-rpg_941600-581.jpg" class="heroi">
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MB CLASH - Arena Evolution</title>
+    <style>
+        body {
+            background: radial-gradient(circle, #1a1a2e 0%, #0f0f1a 100%);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+        }
+
+        .battle-arena {
+            background: url('https://your-image-link.com/arena.jpg') center/cover;
+            border: 4px solid #4ecca3;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            height: 400px;
+            margin: 20px auto;
+            position: relative;
+            box-shadow: 0 0 30px rgba(78, 204, 163, 0.3);
+        }
+
+        .player-bar {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 250px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 5px solid #ff4b2b;
+        }
+
+        .hp-bar {
+            background: #333;
+            height: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .hp-fill {
+            background: linear-gradient(90deg, #ff416c, #ff4b2b);
+            width: 80%; /* Dinâmico via Python */
+            height: 100%;
+        }
+
+        .action-buttons {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .btn-pix {
+            background: #32bcad;
+            color: black;
+            font-weight: bold;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(50, 188, 173, 0.4);
+        }
+
+        .btn-pix:hover {
+            transform: scale(1.1);
+            filter: brightness(1.2);
+        }
+    </style>
+</head>
+<body>
+    <h1>⚔️ MB CLASH: EVOLUÇÃO ⚔️</h1>
+    
+    <div class="battle-arena">
+        <div class="player-bar">
+            <strong>Mateus Bispo</strong> <br>
+            Nível 15 | Guerreiro Master
+            <div class="hp-bar"><div class="hp-fill"></div></div>
+        </div>
         </div>
 
-        <div class="login-box">
-            <h1 style="color:#ffd700; margin-bottom:20px;">MB CLASH</h1>
-            <input type="text" id="user" placeholder="NOME DE USUÁRIO">
-            <input type="password" id="pass" placeholder="SENHA SECRETA">
-            <button id="btn-entrar" onclick="logar()">ENTRAR NA ARENA</button>
-            <div id="msg"></div>
-            
-            <a href="mailto:mbinformatica508@gmail.com?subject=Suporte%20MB%20Clash&body=Olá,%20estou%20com%20dificuldades%20para%20acessar%20o%20jogo." class="btn-suporte">
-                📧 SUPORTE POR E-MAIL
-            </a>
-        </div>
-
-        <script>
-            async function logar() {
-                const user = document.getElementById('user').value;
-                const pass = document.getElementById('pass').value;
-                const msg = document.getElementById('msg');
-                const btn = document.getElementById('btn-entrar');
-                
-                if(!user || !pass) { msg.innerText = "Preencha todos os campos!"; return; }
-                
-                btn.innerText = "CONECTANDO AO BANCO...";
-                btn.disabled = true;
-                msg.innerText = "";
-                
-                try {
-                    const res = await fetch('/login_action', {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({user, pass})
-                    });
-                    const d = await res.json();
-                    
-                    if(d.status === 'success') {
-                        msg.style.color = "#2ed573";
-                        msg.innerText = "SUCESSO! CARREGANDO JOGO...";
-                        setTimeout(() => { window.location.href = '/'; }, 1000);
-                    } else {
-                        msg.innerText = "❌ " + d.message;
-                        btn.innerText = "ENTRAR NA ARENA";
-                        btn.disabled = false;
-                    }
-                } catch (e) {
-                    msg.innerText = "⚠️ ERRO DE REDE: O servidor não respondeu.";
-                    btn.innerText = "TENTAR NOVAMENTE";
-                    btn.disabled = false;
-                }
-            }
-        </script>
-    </body>
-    </html>
-    """
+    <div class="action-buttons">
+        <button class="btn-pix">SOLTAR PODER (50 Gold)</button>
+        <a href="/comprar-gold" class="btn-pix" style="background: #ffd700;">💰 RECARGA PIX (BÔNUS 20%)</a>
+    </div>
+</body>
+</html>
 
 @app.route('/login_action', methods=['POST'])
 def login_action():
